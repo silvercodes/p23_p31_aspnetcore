@@ -46,18 +46,30 @@ WebApplication app = builder.Build();
 
 
 
-app.Use(async (context, next) =>
-{
-    var sw = Stopwatch.StartNew();
-    await next(context);
-    sw.Stop();
-    Console.WriteLine($"Time = {sw.ElapsedMilliseconds} ms");
-});
+//app.Use(async (context, next) =>
+//{
+//    var sw = Stopwatch.StartNew();
+//    await next(context);
+//    sw.Stop();
+//    Console.WriteLine($"Time = {sw.ElapsedMilliseconds} ms");
+//});
 
-app.Run(async (context) => 
+//app.Run(async (context) => 
+//{
+//    await Task.Delay(500);
+//    await context.Response.WriteAsync("VASIA HELLO");
+//});
+
+//app.Run();
+
+
+
+
+int count = 0;
+app.Run(async (ctx) =>
 {
-    await Task.Delay(500);
-    await context.Response.WriteAsync("VASIA HELLO");
+    count += 10;
+    await ctx.Response.WriteAsync($"COUNT = {count}");
 });
 
 app.Run();
