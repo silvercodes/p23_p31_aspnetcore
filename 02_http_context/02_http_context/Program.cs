@@ -17,10 +17,10 @@
 
 
 #region HttpResponse
-using System.Text.Json;
+//using System.Text.Json;
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+//var builder = WebApplication.CreateBuilder(args);
+//var app = builder.Build();
 
 // -------- Базовый пример --------
 
@@ -134,27 +134,47 @@ var app = builder.Build();
 
 
 
-// -------Отправка файла---- -
+// ------- Simple Routing ---- -
 
-app.Run(async (context) =>
-{
-    HttpRequest req = context.Request;
-    HttpResponse res = context.Response;
+//app.Run(async (context) =>
+//{
+//    HttpRequest req = context.Request;
+//    HttpResponse res = context.Response;
 
-    res.ContentType = "text/plain; charset=utf-8";
+//    res.ContentType = "text/plain; charset=utf-8";
 
-    if (req.Path == "/time")
-        await res.WriteAsync(DateTime.Now.ToLongTimeString());
-    else if (req.Path == "/date")
-        await res.WriteAsync(DateTime.Now.ToShortDateString());
-    else
-    {
-        res.StatusCode = 404;
-        await res.WriteAsync("Страница не найдена");
-    }
-});
+//    if (req.Path == "/time")
+//        await res.WriteAsync(DateTime.Now.ToLongTimeString());
+//    else if (req.Path == "/date")
+//        await res.WriteAsync(DateTime.Now.ToShortDateString());
+//    else
+//    {
+//        res.StatusCode = 404;
+//        await res.WriteAsync("Страница не найдена");
+//    }
+//});
 
-app.Run();
+//app.Run();
+
+
+
+
+// ------------- Потоковая передача ------------
+
+//app.Run(async context =>
+//{
+//    var res = context.Response;
+
+//    for (int i = 0; i < 5; ++i)
+//    {
+//        await res.WriteAsync($"DATA: {i}\n\n");
+//        await res.Body.FlushAsync();
+//        await Task.Delay(1000);
+//    }
+//});
+
+//app.Run();
+
 
 
 #endregion
