@@ -178,3 +178,108 @@
 
 
 #endregion
+
+
+#region HttpRequest
+
+using System.Net.Mime;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+
+
+//app.Run(async context =>
+//{
+//    var req = context.Request;
+//    var res = context.Response;
+
+//    var report = new 
+//    { 
+//        Method = req.Method,
+//        Path = req.Path,
+//        Protocol = req.Protocol,
+//        Host = req.Host,
+//        QueryString = req.QueryString,
+//        ContentType = req.ContentType,
+//        ContentLength = req.ContentLength,
+//    };
+
+//    await res.WriteAsJsonAsync(report);
+//});
+
+//app.Run();
+
+
+
+
+
+//app.Run(async context =>
+//{
+//    var req = context.Request;
+
+//    string name = req.Query["name"].ToString();
+
+//    string filter = req.Query.TryGetValue("filter", out var f)
+//                    ? f.ToString().ToLower()
+//                    : "id";
+
+//    await context.Response.WriteAsJsonAsync(new { name, filter });
+//});
+
+
+
+
+//app.Run(async context =>
+//{
+//    var req = context.Request;
+//    var res = context.Response;
+
+//    if (! req.Headers.TryGetValue("X-Api-Key", out var apiKey))
+//    {
+//        res.StatusCode = StatusCodes.Status401Unauthorized;
+//        await res.WriteAsync("API key is required");
+//        return;
+//    }
+
+//    if (! req.Cookies.TryGetValue("auth-token", out var token))
+//    {
+//        res.StatusCode = StatusCodes.Status403Forbidden;
+//        await res.WriteAsync("Not authenticated");
+//        return;
+//    }
+
+//    await res.WriteAsync("Access granted");
+//    return;
+//});
+
+
+
+
+
+app.Run(async context =>
+{
+    var req = context.Request;
+    var res = context.Response;
+
+    switch(req.Path)
+    {
+        case "/api/v1/users" when req.Method == "GET":
+
+            break;
+
+        case "/api/v1/users" when req.Method == "POST":
+
+            break;
+
+        default:
+            res.StatusCode = StatusCodes.Status404NotFound;
+            await res.WriteAsync("Endpoint not found");
+            break;
+    }
+});
+
+app.Run();
+
+
+#endregion
