@@ -1,5 +1,21 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+using _04_form.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
+var env = app.Environment;
+
+var users = new List<User>();
+var usersFilePath = Path.Combine(env.ContentRootPath, "Data", "users.json");
+
+// Donload users
+if (File.Exists(usersFilePath))
+{
+    string json = await File.ReadAllTextAsync(usersFilePath);
+    users = JsonSerializer.Deserialize<List<User>>(json) ?? users;
+}
 
 app.UseStaticFiles();
 
@@ -7,7 +23,7 @@ app.Run(async context =>
 {
     var req = context.Request;
     var res = context.Response;
-    var env = app.Environment;
+    
 
     switch(req.Path)
     {
@@ -45,8 +61,19 @@ app.Run(async context =>
                     return;
                 }
 
+                // Create user
+                var user = new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Username = form["username"].ToString(),
+                    Email = form["email"].ToString(),
+                    PasswordHash = HashPassword(form["password"].ToString()),
+                    CreatedAt = DateTime.Now,
+                };
+
                 // Avatar handling
                 var avatarFile = form.Files["avatar"];
+                string avatarPath = string.Empty;
 
                 if (avatarFile?.Length > 0)
                 {
@@ -60,21 +87,28 @@ app.Run(async context =>
                     }
 
                     var fileName = $"{Guid.NewGuid()}{extension}";
-                    var avatarPath = Path.Combine("Storage", fileName);
+                    avatarPath = Path.Combine("Storage", fileName);
 
                     await using var stream = File.Create(Path.Combine(env.ContentRootPath, avatarPath));
 
                     await avatarFile.CopyToAsync(stream);
                 }
 
+                user.AvatarPath = avatarPath;
 
+                users.Add(user);
+                await SaveUsers();
 
-
-
-
-
-
-
+                // Send response
+                res.ContentType = "application/json";
+                await res.WriteAsJsonAsync(new
+                {
+                    user.Id,
+                    user.Username,
+                    user.Email,
+                    user.AvatarPath,
+                    user.CreatedAt
+                });
             }
             catch (Exception ex)
             {
@@ -119,3 +153,20 @@ async Task SendError(HttpResponse res, int statusCode, string message)
 
     return (true, null);
 }
+
+string HashPassword(string password)
+{
+    using var sha = SHA256.Create();
+    var bytes = Encoding.UTF8.GetBytes(password);
+    var hash = sha.ComputeHash(bytes);
+
+    return Convert.ToBase64String(hash);
+}
+
+async Task SaveUsers()
+{
+    var json = JsonSerializer.Serialize(users);
+    await File.WriteAllTextAsync(usersFilePath, json);
+}
+
+
