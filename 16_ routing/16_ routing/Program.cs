@@ -260,62 +260,104 @@
 
 #region Complex Example
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+//var builder = WebApplication.CreateBuilder(args);
+//var app = builder.Build();
 
-app.Use(async (context, next) =>
-{
-    context.Response.ContentType = "text/plain; charset=utf-8;";
+//app.Use(async (context, next) =>
+//{
+//    context.Response.ContentType = "text/plain; charset=utf-8;";
 
-    Console.WriteLine("Middleware1: Начало");
-    await context.Response.WriteAsync("Middleware 1\n");
-    await next();
-    Console.WriteLine("Middleware1: Завершение");
-});
+//    Console.WriteLine("Middleware1: Начало");
+//    await context.Response.WriteAsync("Middleware 1\n");
+//    await next();
+//    Console.WriteLine("Middleware1: Завершение");
+//});
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine("Middleware2: Начало");
-    await context.Response.WriteAsync("Middleware 2\n");
-    await next();
-    Console.WriteLine("Middleware2: Завершение");
-});
+//app.Use(async (context, next) =>
+//{
+//    Console.WriteLine("Middleware2: Начало");
+//    await context.Response.WriteAsync("Middleware 2\n");
+//    await next();
+//    Console.WriteLine("Middleware2: Завершение");
+//});
 
-app.UseRouting();
+//app.UseRouting();
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine("Middleware3: Начало");
+//app.Use(async (context, next) =>
+//{
+//    Console.WriteLine("Middleware3: Начало");
 
-    Endpoint? endpoint = context.GetEndpoint();
-    if (endpoint is not null)
-        await context.Response.WriteAsync($"Определена конечная точка: {endpoint.DisplayName}\n");
-    else
-        await context.Response.WriteAsync($"Конечная точка не определена\n");
+//    Endpoint? endpoint = context.GetEndpoint();
+//    if (endpoint is not null)
+//        await context.Response.WriteAsync($"Определена конечная точка: {endpoint.DisplayName}\n");
+//    else
+//        await context.Response.WriteAsync($"Конечная точка не определена\n");
 
-    await next();
+//    await next();
 
-    Console.WriteLine("Middleware3: Завершение");
-});
+//    Console.WriteLine("Middleware3: Завершение");
+//});
 
-app.MapGet("/", () => "Endpoint: HOME PAGE")
-    .WithDisplayName("Home endpoint");
+//app.MapGet("/", () => "Endpoint: HOME PAGE")
+//    .WithDisplayName("Home endpoint");
 
-app.MapGet("/about", () => "Endpoint: ABOUT US")
-    .WithDisplayName("About endpoint");
+//app.MapGet("/about", () => "Endpoint: ABOUT US")
+//    .WithDisplayName("About endpoint");
 
-app.Use(async (context, next) =>
-{
-    Console.WriteLine("Middleware4: Начало");
-    await context.Response.WriteAsync("Middleware 4\n");
-    await next();
-    Console.WriteLine("Middleware4: Завершение");
-});
+//app.Use(async (context, next) =>
+//{
+//    Console.WriteLine("Middleware4: Начало");
+//    await context.Response.WriteAsync("Middleware 4\n");
+//    await next();
+//    Console.WriteLine("Middleware4: Завершение");
+//});
 
-app.UseEndpoints(eps => { });
+//app.UseEndpoints(eps => { });
 
-app.Run();
+//app.Run();
 
 
 #endregion
 
+
+#region Query parameters
+
+//var builder = WebApplication.CreateBuilder(args);
+//var app = builder.Build();
+
+// 1. Автоматическое внедрение
+// app.MapGet("/products", (int page, int size) => $"page: {page}, size: {size}");
+// app.MapGet("/products", (int page, int? size) => $"page: {page}, size: {size ?? 1}");
+
+// 2. Использование атрибута
+// app.MapGet("/users", ([FromQuery(Name = "page_number")] int page) => $"Page: {page}");
+
+// 3. From HttpContext
+//app.MapGet("/orders", (HttpContext context) =>
+//{
+//    var sort = context.Request.Query["sort"].FirstOrDefault() ?? "id";
+//    var desc = bool.Parse(context.Request.Query["desc"].FirstOrDefault() ?? "false");
+
+//    return $"sort: {sort}, desc: {desc}";
+//});
+
+// 4. Привязка к объекту
+//app.MapGet("/products", ([AsParameters] FilterOptions filter) => filter);
+
+//app.Run();
+
+//public record FilterOptions
+//(
+//    string Category,
+//    double? MinPrice = null,
+//    double? MaxPrice = null,
+//    string SortBy = "name"
+//);
+
+
+// 5. Arrays and lists
+//app.MapGet("/tags", (string[] tags) => $"Tags: {string.Join(',', tags)}");
+
+// app.Run();
+
+#endregion
