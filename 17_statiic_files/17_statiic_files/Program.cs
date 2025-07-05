@@ -1,18 +1,19 @@
 // using Microsoft.Extensions.FileProviders;
 
-//var builder = WebApplication.CreateBuilder(args);
-//var app = builder.Build();
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
 
 // ------------------
 
-// index.html -> index.htm -> default.html -> default.htm
+// index.html->index.htm-> default.html-> default.htm
 //app.UseDefaultFiles();
 //app.UseStaticFiles();
 //app.UseRouting();
 //app.UseEndpoints(endpoints => { });
 
 //app.MapGet("/", () => "Hello World!");
+//app.Run();
 
 // -------------------
 //app.UseStaticFiles(new StaticFileOptions
@@ -47,20 +48,20 @@
 
 
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+//var builder = WebApplication.CreateBuilder(args);
+//var app = builder.Build();
 
-app.MapStaticAssets();
+//app.MapStaticAssets();
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    OnPrepareResponse = ctx =>
-    {
-        ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=3600");
-    }
-});
+//app.UseStaticFiles(new StaticFileOptions
+//{
+//    OnPrepareResponse = ctx =>
+//    {
+//        ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=3600");
+//    }
+//});
 
-app.MapFallbackToFile("index.html");
+//app.MapFallbackToFile("index.html");
 
-app.Run();
+//app.Run();
 

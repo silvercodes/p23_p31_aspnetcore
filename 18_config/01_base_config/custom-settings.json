@@ -1,0 +1,8 @@
+{
+    "AppSettings": {
+        "Title": "My application"
+    },
+    "Database": {
+        "ConnectionString": "Server=default;Database=app_db;User=custom_user;"
+    }
+}
