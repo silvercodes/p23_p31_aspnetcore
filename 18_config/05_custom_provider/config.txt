@@ -1,0 +1,8 @@
+﻿# My Custom Configuration
+AppName = TextFile Name
+MaxConnections = 150
+EnableLogging = true
+
+# Keys
+ApiKey = "SD-342$URIY_SECRET"
+Timeout = 00:05:30
