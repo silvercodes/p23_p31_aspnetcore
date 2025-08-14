@@ -9,8 +9,8 @@ const string loginForm = """
 </head>
 <body>
     <form action="/login" method="post">
-        <input type="text" name="username" placeholder="Username" requred>
-        <input type="password" name="password" placeholder="Password" requred>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">LOGIN</button>
     </form>
 </body>
@@ -64,7 +64,7 @@ app.MapPost("/login", async (HttpContext ctx) =>
             new (ClaimTypes.Role, "User")
         };
 
-        var identity = new ClaimsIdentity(claims);
+        var identity = new ClaimsIdentity(claims, "MyCookie");
         var principal = new ClaimsPrincipal(identity);
 
         await ctx.SignInAsync("MyCookie", principal);
