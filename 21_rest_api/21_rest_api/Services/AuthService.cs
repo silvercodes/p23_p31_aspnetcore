@@ -44,9 +44,17 @@ public class AuthService : IAuthService
 
         return GenerateAuthResponse(user);
     }
-    public Task<AuthResponse> Login(LoginRequest request)
+    public async Task<AuthResponse> Login(LoginRequest request)
     {
-        throw new NotImplementedException();
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
+
+        if (user is null)
+            throw new Exception("User not found");
+
+        if (!Cryptography.VerifyPasswordHash(request.Password, user.PasswordHash, user.PasswordSalt))
+            throw new Exception("Invalid password");
+
+        return GenerateAuthResponse(user);
     }
 
     private AuthResponse GenerateAuthResponse(User user)
