@@ -1,4 +1,4 @@
-﻿namespace _21_rest_api.Models.Auth;
+namespace _21_rest_api.Models.Auth;
 
 public class RegisterRequest
 {
