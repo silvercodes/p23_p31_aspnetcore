@@ -1,5 +1,3 @@
-
-
 using _21_rest_api.Data;
 using _21_rest_api.Endpoints;
 using _21_rest_api.Extensions;
