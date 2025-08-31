@@ -4,7 +4,7 @@ using ProductCatalog.Models;
 
 namespace ProductCatalog.Controllers;
 
-[Route("Home")]
+// [Route("Home")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -14,12 +14,13 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    // /Home/Index
     public IActionResult Index()
     {
         return View();
     }
 
-    [HttpGet("Privacy")]
+    // [HttpGet("Privacy")]
     public IActionResult Privacy()
     {
         return View();
